@@ -2,24 +2,27 @@ import { useState } from "react";
 import "./App.css";
 import { SuggestionsBox } from "./components/SuggestionBox/SuggestionsBox";
 import { SearchBar } from "./components/SearchBar/SearchBar";
-import { useFetchPokemons } from "./data/useFetchPokemons";
+import { useFetchPokemonSuggestions } from "./data/useFetchPokemonSuggestions";
 
 function App() {
   const [query, setQuery] = useState<string>("");
   const [isSuggestionBoxOpen, setIsSuggestionBoxOpen] =
     useState<boolean>(false);
-  const { isLoading, data: pokemons, error } = useFetchPokemons();
-  const filteredPokemons = pokemons.filter((pokemon) => {
-    return pokemon.name.toLocaleLowerCase().startsWith(query);
-  });
+  const {
+    isLoading,
+    data: pokemons,
+    error,
+    fetch,
+  } = useFetchPokemonSuggestions();
 
   function handleSuggestionClick(selectedPokemon: string) {
     setQuery(selectedPokemon);
     setIsSuggestionBoxOpen(false);
   }
 
-  function handleQueryChange(query: string) {
-    setQuery(query.toLocaleLowerCase());
+  async function handleQueryChange(query: string) {
+    await fetch(query);
+    setQuery(query);
     setIsSuggestionBoxOpen(true);
   }
 
@@ -43,7 +46,7 @@ function App() {
       <SuggestionsBox
         query={query}
         open={isSuggestionBoxOpen}
-        items={filteredPokemons}
+        items={pokemons}
         handleItemClick={handleSuggestionClick}
       />
     </div>

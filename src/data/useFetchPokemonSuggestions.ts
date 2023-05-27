@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Pokemon } from "../types";
 
 async function GET(url: string) {
@@ -15,24 +15,26 @@ async function fetchPokemons() {
   return response;
 }
 
-export function useFetchPokemons() {
+export function useFetchPokemonSuggestions() {
   // in a bigger app, we should move the loading state to a global state management library like redux
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<Pokemon[]>([]);
   const [error, setError] = useState<Error>();
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await fetchPokemons();
-        setData(data.results);
-      } catch (error) {
-        setError(error as Error);
-      }
-      setIsLoading(false);
-    };
-    fetch();
-  }, []);
+  async function fetch(query: string) {
+    try {
+      const data = await fetchPokemons();
+      const pokemonSuggestions = data.results.filter((pokemon: Pokemon) => {
+        return pokemon.name
+          .toLocaleLowerCase()
+          .startsWith(query.toLocaleLowerCase());
+      });
+      setData(pokemonSuggestions);
+    } catch (error) {
+      setError(error as Error);
+    }
+    setIsLoading(false);
+  }
 
-  return { isLoading, data, error };
+  return { isLoading, data, error, fetch };
 }
