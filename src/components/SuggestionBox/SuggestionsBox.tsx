@@ -6,10 +6,17 @@ interface Props {
   query: string;
   open: boolean;
   items: Pokemon[];
+  loading?: boolean;
   handleItemClick: (selectedItem: string) => void;
 }
 
-export function SuggestionsBox({ query, open, items, handleItemClick }: Props) {
+export function SuggestionsBox({
+  query,
+  open,
+  items,
+  loading = false,
+  handleItemClick,
+}: Props) {
   if (query === "" || !open) {
     return null;
   }
@@ -42,5 +49,9 @@ export function SuggestionsBox({ query, open, items, handleItemClick }: Props) {
       })
     );
 
-  return <ul className="SuggestionBox">{suggestionItems}</ul>;
+  return (
+    <ul className="SuggestionBox">
+      {loading ? <p>Loading...</p> : suggestionItems}
+    </ul>
+  );
 }

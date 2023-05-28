@@ -32,9 +32,7 @@ function App() {
     );
   }
 
-  const mainMarkup = isLoading ? (
-    <p>Loading...</p>
-  ) : (
+  return (
     <div>
       <h1>Search a Pokemon</h1>
       <SearchBar
@@ -48,10 +46,10 @@ function App() {
         open={isSuggestionBoxOpen}
         items={pokemons}
         handleItemClick={handleSuggestionClick}
+        loading={isLoading}
       />
     </div>
   );
-  return <div>{mainMarkup}</div>;
 }
 
 export default App;
