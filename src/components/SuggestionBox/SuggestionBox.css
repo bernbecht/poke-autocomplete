@@ -1,6 +1,7 @@
 .SuggestionBox {
   max-height: 300px;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-top: var(--space-2);
   border-radius: var(--space-3);
   padding: var(--space-2);
