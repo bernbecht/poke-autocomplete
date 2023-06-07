@@ -41,12 +41,12 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: var(--color-primary);
-}
+
+button:hover,
 button:focus,
 button:focus-visible {
   outline: var(--space-1);
+  border-color: var(--color-primary);
 }
 
 @media (prefers-color-scheme: light) {
