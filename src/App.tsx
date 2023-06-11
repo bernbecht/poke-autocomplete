@@ -32,14 +32,24 @@ function App() {
     );
   }
 
+  const clearButton = query ? (
+    <button
+      onClick={() => {
+        setQuery("");
+        setIsSuggestionBoxOpen(false);
+      }}
+    >
+      Clear
+    </button>
+  ) : null;
+
   return (
     <div>
       <h1>Search a Pokemon</h1>
       <SearchBar
         query={query}
-        setQuery={setQuery}
-        setIsSuggestionBoxOpen={setIsSuggestionBoxOpen}
         handleQueryChange={handleQueryChange}
+        clearButton={clearButton}
       />
       <SuggestionsBox
         query={query}

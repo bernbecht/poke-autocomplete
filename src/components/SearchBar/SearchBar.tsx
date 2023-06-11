@@ -2,17 +2,11 @@ import "./SearchBar.css";
 
 interface Props {
   query: string;
-  setQuery: (query: string) => void;
-  setIsSuggestionBoxOpen: (isOpen: boolean) => void;
+  clearButton?: React.ReactNode;
   handleQueryChange: (query: string) => void;
 }
 
-export function SearchBar({
-  query,
-  setQuery,
-  setIsSuggestionBoxOpen,
-  handleQueryChange,
-}: Props) {
+export function SearchBar({ query, clearButton, handleQueryChange }: Props) {
   return (
     <label className="SearchBarContainer">
       <input
@@ -22,14 +16,7 @@ export function SearchBar({
         className="SearchBar"
         value={query}
       />
-      <button
-        onClick={() => {
-          setQuery("");
-          setIsSuggestionBoxOpen(false);
-        }}
-      >
-        Clear
-      </button>
+      {clearButton}
     </label>
   );
 }
