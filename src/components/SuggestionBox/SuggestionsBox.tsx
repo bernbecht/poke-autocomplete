@@ -1,22 +1,32 @@
-import { Pokemon } from "../../types";
+import { useEffect } from "react";
+import { useFetchPokemonSuggestions } from "../../data/useFetchPokemonSuggestions";
 import { capitalizeFirstLetter } from "../../utils";
 import "./SuggestionBox.css";
 
 interface Props {
   query: string;
   open: boolean;
-  items: Pokemon[];
   loading?: boolean;
   handleItemClick: (selectedItem: string) => void;
 }
 
-export function SuggestionsBox({
-  query,
-  open,
-  items,
-  loading = false,
-  handleItemClick,
-}: Props) {
+export function SuggestionsBox({ query, open, handleItemClick }: Props) {
+  const {
+    isLoading,
+    data: items,
+    error,
+    fetch: pokemonFetch,
+  } = useFetchPokemonSuggestions();
+
+  useEffect(() => {
+    const dataFetch = async () => {
+      await pokemonFetch(query);
+    };
+    if (query !== "") {
+      dataFetch();
+    }
+  }, [query]);
+
   if (query === "" || !open) {
     return null;
   }
@@ -51,7 +61,10 @@ export function SuggestionsBox({
 
   return (
     <ul className="SuggestionBox">
-      {loading ? <p>Loading...</p> : suggestionItems}
+      {isLoading ? <p>Loading...</p> : suggestionItems}
+      {error && (
+        <p>☹️ Our system isn't available right now. Please try again later</p>
+      )}
     </ul>
   );
 }
